@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - LMS</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <header>
+        <img src="logo.jpg" alt="LMS Logo" style="width: 100px; height: 100px;">
+        <h1>LMS - Learning Management System</h1>
+    </header>
+    <div>
+        <nav>
+            <a href="index.html">Homepage</a>
+        </nav>
+    </div>
+    
+    <main class="login">
+        <h2>Sign Up</h2>
+        <form id="signUpForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+
+            <label for="confirmation">Confirm Password:</label>
+            <input type="password" id="confirmation" name="confirmation" required><br><br>
+            
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required><br>
+
+            <button id="signUpButton" type="button">Sign Up</button>
+        </form>
+        <br>
+        <br>
+
+
+
+        <p id="message"></p>
+
+        <script class="authentication">
+            document.getElementById("signUpButton").addEventListener("click", async function(event) {
+
+                const usernameInput = document.getElementById("username").value.trim();
+                const passwordInput = document.getElementById("password").value.trim();
+                const confirmationInput = document.getElementById("confirmation").value.trim();
+                const emailInput = document.getElementById("email").value.trim();
+                const message = document.getElementById("message");
+
+                let errors = [];
+
+                if (!validateUsername(usernameInput)) {
+                    errors.push("Invalid Username: (Username must be 3-20 characters, start with a letter, and contain only letters, numbers, hyphens, or underscores.)");
+                }
+                
+                if (!validatePassword(passwordInput)) {
+                    errors.push("Invalid Password: (Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, one number, and one special character.)");
+                }
+                
+                if (!validateConfirmation(passwordInput, confirmationInput)) {
+                    errors.push("Passwords do not match.");
+                }
+                
+                if (!validateEmail(emailInput)) {
+                    errors.push("Invalid Email: (Please enter a valid email address.)");
+                }
+
+                if (errors.length > 0) {
+                    message.innerHTML = errors.join("<br>");
+                    message.style.display = "inline-block";
+                    return;
+                }
+                            
+
+                try {
+                    const user = true;
+
+                    if (user) {
+                        message.textContent = "Sign up successful! Redirecting...";
+                        message.style.display = "inline-block";
+
+                        setTimeout(() => {
+                            window.location.href = "login.html";
+                        }, 2000);
+
+                    } else {
+                        message.textContent = "Invalid username or password!";
+                        message.style.display = "inline-block";
+                    }
+
+                } catch (error) {
+                    console.error("Error fetching database information", error);
+                    message.textContent = "An error occurred during sign up.";
+                    message.style.display = "inline-block";
+                }
+            });
+
+            function validateUsername(username) {
+                const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_-]{2,19}$/;
+                return usernameRegex.test(username);
+            }
+
+            function validatePassword(password) {
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{}|;:'",.<>?/`~])[A-Za-z\d!@#$%^&*()\-_=+\[\]{}|;:'",.<>?/`~]{8,}$/;
+                return passwordRegex.test(password);
+            }
+
+            function validateConfirmation(password, confirmation) {
+                return password === confirmation;
+            }
+
+            function validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+        </script>
+        
+    </main>
+    <footer>
+        <p>&copy; 2025 LMS. All rights reserved.</p>
+    </footer>
+</body>
+</html>
