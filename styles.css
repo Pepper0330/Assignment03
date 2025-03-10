@@ -132,6 +132,10 @@ table[class="cv"] td {
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.1);
 }
 
+table[class="cv"] td:hover {
+    background-color: #ffffff;
+}
+
 table[class="cv"] td img {
     width: 100%;
     border-radius: 5px;

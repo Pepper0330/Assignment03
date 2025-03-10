@@ -5,6 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attempt Quiz - LMS</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script>
+        let totalScore = 0;
+        document.addEventListener("DOMContentLoaded", () => {
+            let timer = document.getElementById("timer");
+            let seconds = 600;
+            totalScore = 0;
+
+            setInterval( () => {
+                seconds--;
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                timer.textContent = `Time Remaining: ${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+                if (seconds === 0) {
+                    window.location.href = "leaderboard.html";
+                }
+            }, 1000);
+        });
+
+        let updateScore = (question) => {
+            let addedScore = 0;
+            let score = document.getElementById("score");
+            let q = document.getElementsByClassName("Qs")[question];
+
+            if (question == 0) {
+                addedScore = q.getElementsByTagName("input")[0].checked ? 50 : 0;
+
+                if (!q.getElementsByTagName("input")[0].checked && !q.getElementsByTagName("input")[1].checked) {
+                    alert("Please select an answer");
+                    return;
+                }
+            } else if (question == 1) {
+                addedScore = (q.getElementsByTagName("input")[0].checked ? 25 : 0) + (q.getElementsByTagName("input")[1].checked ? 25 : 0);
+            }
+
+            totalScore += addedScore;
+            score.textContent = `Score: ${totalScore}`;
+
+            // remove the ability to submit again
+            let button = document.getElementsByClassName("ans")[question];
+            button.disabled = true;
+            button.style.backgroundColor = "lightgray";
+            button.style.color = "#a6a6a6"
+        }
+        
+    </script>
 </head>
 <body>
     <header>
@@ -26,6 +71,9 @@
             <p>Deadline: 11:59 PM, February 10, 2025</p>
             <p>Attempts Allowed: 1</p>
         </div>
+
+        <h2 id="timer">Time Remaining: 10:00</h2>
+        <h3 id="score">Score: 0</h3>
         
         <h3>Question 1</h3>
         <p>What does HTML stand for?</p>
@@ -36,7 +84,7 @@
             <label for="q1b">Home Tool Markup Language</label><br>
         </div>
         <br>
-        <button class="ans">Submit Answer</button>
+        <button class="ans" onclick="updateScore(0)">Submit Answer</button>
         
         <h3>Question 2</h3>
         <p>Which of the following are HTML elements? (Select all that apply)</p>
@@ -47,7 +95,7 @@
         <label for="q2b">&lt;span&gt;</label><br>
         </div>
         <br>
-        <button class="ans">Submit Answer</button>
+        <button class="ans" onclick="updateScore(1)">Submit Answer</button>
         
         <br><br>
         <a href="leaderboard.html">

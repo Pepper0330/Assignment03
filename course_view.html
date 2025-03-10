@@ -5,6 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course View - LMS</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <script>
+        function addCourse(id) {
+            // get the course tile and its info
+            let courseTile = document.getElementById(id)
+            let course = courseTile.getElementsByTagName("div")[0];
+            let courseName = course.getElementsByTagName("p")[0].textContent;
+            let courseCode = course.getElementsByTagName("p")[1].textContent;
+
+            // get the container to add the course to
+            let enrolledContainer = document.getElementsByClassName("cv")[0];
+
+
+            let enrolledRows = enrolledContainer.getElementsByTagName("tr");
+
+            let i = 0;
+            for(; i < enrolledRows.length; i++) {
+                let enrolledRow = enrolledRows[i];
+                if(enrolledRow.getElementsByTagName("td").length < 3) {
+                    break;
+                }
+            }
+
+            if (i == enrolledRows.length) {
+                let enrolledRow = document.createElement("tr");
+                enrolledContainer.appendChild(enrolledRow);
+            }
+
+            let enrolledRow = enrolledRows[i];
+            
+            // construct the course tile
+            let tile = document.createElement("td");
+
+            tile.innerHTML = `
+            <div>
+            <img src="course1.jpg" alt="Course 1">
+            <p>${courseName}</p>
+            <p>${courseCode}</p>
+            <a href="attempt_quiz.html">Attempt Quiz</a>
+            </div>`;
+
+            enrolledRow.appendChild(tile);
+            courseTile.remove();
+        }
+    
+        function removeCourse(id) {
+            let courseTile = document.getElementById(id)
+            courseTile.remove();
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -58,7 +108,7 @@
                         </div>
 					</td>
 				</tr>
-				<!-- Display Course 4 and 5 in the same line -->
+				
 				<tr>
 					<td>
 						<div>
@@ -91,22 +141,22 @@
             <hr>
             <table class="cv">
 				<tr>
-					<td>
+					<td id="pendingCourse1">
                         <div>
                             <img src="course2.jpg" alt="Course 2">
                             <p>Course Name: Data Science</p>
                             <p>Course Code: DS102</p>
-                            <button class="accept">Accept</button>
-                            <button class="decline">Decline</button>
+                            <button class="accept" onclick="addCourse('pendingCourse1')">Accept</button>
+                            <button class="decline" onclick="removeCourse('pendingCourse1')">Decline</button>
                         </div>
                     </td> 
-                    <td>
+                    <td id="pendingCourse2">
                         <div>
                             <img src="course2.jpg" alt="Course 2">
                             <p>Course Name: Machine Learning</p>
                             <p>Course Code: ML105</p>
-                            <button class="accept">Accept</button>
-                            <button class="decline">Decline</button>
+                            <button class="accept" onclick="addCourse('pendingCourse2')">Accept</button>
+                            <button class="decline" onclick="removeCourse('pendingCourse2')">Decline</button>
                         </div>
                     </td> 
                 </tr>
